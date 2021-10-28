@@ -22,12 +22,18 @@ export const todosSlice = createSlice({
 
       state.push(todo);
     },
+    toggleComplete: (state, action) => {
+      const { id: todoId, completed } = action.payload;
+
+      const index = state.findIndex((todo) => todo.id === todoId);
+      state[index].completed = completed;
+    },
   },
 });
 
 console.log("[todosSlice]", todosSlice);
 console.log("[todosSlice.actions]", todosSlice.actions);
 
-export const { addTodo } = todosSlice.actions;
+export const { addTodo, toggleComplete } = todosSlice.actions;
 
 export default todosSlice.reducer;
