@@ -1,18 +1,27 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { addTodo } from "../redux/todosSlice.js";
+import { addTodo, addTodoAsync } from "../redux/todosSlice.js";
 
 const AddTodoForm = () => {
   const [value, setValue] = useState("");
   const dispatch = useDispatch();
 
+  // 同步版本
+  // const onSubmit = (event) => {
+  //   event.preventDefault();
+  //   console.log("user entered: " + value);
+
+  //   if (value) {
+  //     dispatch(addTodo({ title: value }));
+  //   }
+  // };
+
+  // 非同步版本
   const onSubmit = (event) => {
     event.preventDefault();
-    console.log("user entered: " + value);
+    console.log("user entered:" + value);
 
-    if (value) {
-      dispatch(addTodo({ title: value }));
-    }
+    if (value) dispatch(addTodoAsync({ title: value }));
   };
 
   return (
