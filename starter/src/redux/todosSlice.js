@@ -11,7 +11,7 @@ export const todosSlice = createSlice({
   ],
   reducers: {
     addTodo: (state, action) => {
-      console.log("action", action);
+      // console.log("action", action);
       // {type: 'todos/REDUCER_NAME', payload: {title: ...}}
 
       const todo = {
@@ -28,12 +28,16 @@ export const todosSlice = createSlice({
       const index = state.findIndex((todo) => todo.id === todoId);
       state[index].completed = completed;
     },
+    deleteTodo: (state, action) => {
+      const { id: todoId } = action.payload;
+      return state.filter((todo) => todo.id !== todoId);
+    },
   },
 });
 
 console.log("[todosSlice]", todosSlice);
 console.log("[todosSlice.actions]", todosSlice.actions);
 
-export const { addTodo, toggleComplete } = todosSlice.actions;
+export const { addTodo, toggleComplete, deleteTodo } = todosSlice.actions;
 
 export default todosSlice.reducer;
