@@ -31,6 +31,26 @@ export const addTodoAsync = createAsyncThunk(
   }
 );
 
+export const toggleCompleteAsync = createAsyncThunk(
+  "todos/toggleCompleteAsync",
+  // 把 UI 的資料傳給 server 儲存
+  async (payload) => {
+    const { id: todoId, completed } = payload;
+    const res = await fetch(`http://localhost:7000/todos/${todoId}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ completed: completed }),
+    });
+
+    // 將 server 回傳的資料傳給 store 的 extraReducer
+    if (res.ok) {
+      const todo = await res.json();
+      console.log("toggle complete async", todo);
+      return { todo };
+    }
+  }
+);
+
 export const todosSlice = createSlice({
   name: "todos",
   initialState: [
@@ -64,12 +84,20 @@ export const todosSlice = createSlice({
       return state.filter((todo) => todo.id !== todoId);
     },
   },
+  // 接到 server 來的資料後，做對應的處理，將 server 資料存到 redux store，達到前後端資料一致
   extraReducers: {
     [getTodosAsync.fulfilled]: (state, action) => {
       return action.payload.todos;
     },
     [addTodoAsync.fulfilled]: (state, action) => {
       state.push(action.payload.todo);
+    },
+    [toggleCompleteAsync.fulfilled]: (state, action) => {
+      const index = state.findIndex(
+        (todo) => todo.id === action.payload.todo.id
+      );
+
+      state[index].completed = action.payload.todo.completed;
     },
   },
 });

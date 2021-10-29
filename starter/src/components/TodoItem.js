@@ -1,12 +1,22 @@
 import React from "react";
 import { useDispatch } from "react-redux";
-import { toggleComplete, deleteTodo } from "../redux/todosSlice";
+import {
+  toggleComplete,
+  toggleCompleteAsync,
+  deleteTodo,
+} from "../redux/todosSlice";
 
 const TodoItem = ({ id, title, completed }) => {
   const dispatch = useDispatch();
 
+  // 同步版本
+  // const handleCheckboxClick = () => {
+  //   dispatch(toggleComplete({ id, completed: !completed }));
+  // };
+
+  // 非同步版本
   const handleCheckboxClick = () => {
-    dispatch(toggleComplete({ id, completed: !completed }));
+    dispatch(toggleCompleteAsync({ id, completed: !completed }));
   };
 
   const handleDeleteClick = () => {
