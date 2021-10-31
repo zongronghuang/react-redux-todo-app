@@ -4,6 +4,7 @@ import {
   toggleComplete,
   toggleCompleteAsync,
   deleteTodo,
+  deleteTodoAsync
 } from "../redux/todosSlice";
 
 const TodoItem = ({ id, title, completed }) => {
@@ -19,9 +20,16 @@ const TodoItem = ({ id, title, completed }) => {
     dispatch(toggleCompleteAsync({ id, completed: !completed }));
   };
 
+  // 同步版本
+  // const handleDeleteClick = () => {
+  //   dispatch(deleteTodo({ id }));
+  // };
+
+  // 非同步版本
   const handleDeleteClick = () => {
-    dispatch(deleteTodo({ id }));
-  };
+    dispatch(deleteTodoAsync({ id }))
+    console.log('hahaha')
+  }
 
   return (
     <li className={`list-group-item ${completed && "list-group-item-success"}`}>
